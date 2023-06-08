@@ -1,0 +1,42 @@
+// Create a collection called 'users'
+db.createCollection('users');
+
+// Insert a single document into 'users' collection
+db.users.insertOne({
+  name: 'John Doe',
+  age: 30,
+  email: 'johndoe@example.com'
+});
+
+// Insert multiple documents into 'users' collection
+db.users.insertMany([
+  { name: 'Alice Smith', age: 25, email: 'alice@example.com' },
+  { name: 'Bob Johnson', age: 35, email: 'bob@example.com' }
+]);
+
+// Find all documents in 'users' collection
+db.users.find();
+
+// Find documents with age greater than or equal to 30
+db.users.find({ age: { $gte: 30 } });
+
+// Find a single document in 'users' collection by its ObjectId
+db.users.findOne({ _id: ObjectId('60b42d1a6aa2a743e835d05f') });
+
+// Update a single document in 'users' collection
+db.users.updateOne(
+  { name: 'John Doe' },
+  { $set: { age: 32 } }
+);
+
+// Update multiple documents in 'users' collection
+db.users.updateMany(
+  { age: { $lt: 30 } },
+  { $inc: { age: 1 } }
+);
+
+// Delete a single document from 'users' collection
+db.users.deleteOne({ name: 'Alice Smith' });
+
+// Delete multiple documents from 'users' collection
+db.users.deleteMany({ age: { $gt: 40 } });

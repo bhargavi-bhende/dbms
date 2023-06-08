@@ -1,0 +1,80 @@
+CREATE TABLE Employee (
+    employee_name VARCHAR(50),
+    street VARCHAR(100),
+    city VARCHAR(50),
+    Id INT,
+    Mobile_no VARCHAR(20),
+    PRIMARY KEY (employee_name)
+);
+INSERT INTO Employee (employee_name, street, city, Id, Mobile_no)
+VALUES ('John Doe', '123 Main St', 'New York', 1, '555-1234');
+INSERT INTO Employee (employee_name, street, city, Id, Mobile_no)
+VALUES ('Jane Smith', '456 Elm St', 'Los Angeles', 2, '555-5678');
+INSERT INTO Employee (employee_name, street, city, Id, Mobile_no)
+VALUES ('Robert Johnson', '789 Oak St', 'Chicago', 3, '555-91011');
+
+CREATE TABLE Works (
+    employee_name VARCHAR(50),
+    company_name VARCHAR(50),
+    salary DECIMAL(10, 2),
+    PRIMARY KEY (employee_name, company_name),
+    FOREIGN KEY (employee_name) REFERENCES Employee(employee_name)
+);
+INSERT INTO Works (employee_name, company_name, salary)
+VALUES ('John Doe', 'ABC Company', 5000.00);
+INSERT INTO Works (employee_name, company_name, salary)
+VALUES ('Jane Smith', 'XYZ Corporation', 60000.00);
+INSERT INTO Works (employee_name, company_name, salary)
+VALUES ('Robert Johnson', 'DEF Industries', 45000.00);
+
+
+CREATE TABLE Company (
+    company_name VARCHAR(50),
+    city VARCHAR(50),
+    PRIMARY KEY (company_name)
+);
+INSERT INTO Company (company_name, city)
+VALUES ('ABC Company', 'New York');
+INSERT INTO Company (company_name, city)
+VALUES ('XYZ Corporation', 'Los Angeles');
+INSERT INTO Company (company_name, city)
+VALUES ('DEF Industries', 'Chicago');
+
+CREATE TABLE Manages (
+    employee_name VARCHAR(50),
+    manager_name VARCHAR(50),
+    PRIMARY KEY (employee_name),
+    FOREIGN KEY (employee_name) REFERENCES Employee(employee_name),
+    FOREIGN KEY (manager_name) REFERENCES Employee(employee_name)
+);
+INSERT INTO Manages (employee_name, manager_name)
+VALUES ('John Doe', 'Jane Smith');
+INSERT INTO Manages (employee_name, manager_name)
+VALUES ('Jane Smith', 'Robert Johnson');
+INSERT INTO Manages (employee_name, manager_name)
+VALUES ('Robert Johnson', 'John Doe');
+
+SELECT employee_name, Mobile_no
+FROM Employee;
+
+UPDATE Works
+SET salary = 50000
+WHERE employee_name = 'John Doe';
+
+DELETE FROM Company
+WHERE city = 'New York';
+
+SELECT employee_name, salary
+FROM Works
+WHERE salary > 50000 AND salary <= 100000;
+
+SELECT AVG(salary) AS average_salary
+FROM Works;
+
+SELECT employee_name
+FROM Employee
+WHERE city = 'Chicago'
+UNION
+SELECT employee_name
+FROM Employee
+WHERE city = 'Los Angeles';

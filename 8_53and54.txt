@@ -1,0 +1,60 @@
+-- Creating the tables
+CREATE TABLE Project (
+    project_id INT PRIMARY KEY,
+    proj_name VARCHAR(50),
+    chief_arch VARCHAR(50)
+);
+
+CREATE TABLE Employee (
+    Emp_id INT PRIMARY KEY,
+    Emp_name VARCHAR(50)
+);
+
+CREATE TABLE Assigned_To (
+    Project_id INT,
+    emp_id INT,
+    FOREIGN KEY (Project_id) REFERENCES Project(project_id),
+    FOREIGN KEY (emp_id) REFERENCES Employee(Emp_id)
+);
+
+-- Inserting data into tables
+INSERT INTO Project (project_id, proj_name, chief_arch) VALUES
+    (1, 'C353', 'John Doe'),
+    (2, 'C354', 'Jane Smith'),
+    (3, 'C355', 'Michael Johnson');
+
+INSERT INTO Employee (Emp_id, Emp_name) VALUES
+    (101, 'Alice'),
+    (102, 'Bob'),
+    (103, 'Charlie'),
+    (104, 'David');
+
+INSERT INTO Assigned_To (Project_id, emp_id) VALUES
+    (1, 101),
+    (1, 102),
+    (2, 102),
+    (2, 103),
+    (3, 101),
+    (3, 104);
+
+SELECT P.proj_name, COUNT(*) AS employee_count
+FROM Assigned_To A
+JOIN Project P ON A.Project_id = P.project_id
+GROUP BY P.proj_name;
+
+-- Query 2: Get details of employees working on project C353
+SELECT E.Emp_id, E.Emp_name
+FROM Employee E
+JOIN Assigned_To A ON E.Emp_id = A.emp_id
+JOIN Project P ON A.Project_id = P.project_id
+WHERE P.proj_name = 'C353';
+-- Replace 'C353' with the specific project name for which you want to retrieve the employee details
+
+-- Query 3: Obtain details of employees working on both C353 & C354
+SELECT E.Emp_id, E.Emp_name
+FROM Employee E
+JOIN Assigned_To A ON E.Emp_id = A.emp_id
+JOIN Project P ON A.Project_id = P.project_id
+WHERE P.proj_name IN ('C353', 'C354')
+GROUP BY E.Emp_id, E.Emp_name
+HAVING COUNT(DISTINCT P.proj_name) = 2;
